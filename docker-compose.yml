@@ -15,14 +15,6 @@ services:
         ports:
           - 5432:5432
 
-    pgadmin:
-        image: thajeztah/pgadmin4
-        container_name: pgadmin
-        links:
-          - database
-        ports:
-          - 5050:5050
-
     backend:
         extends:
           file: ./common.yml

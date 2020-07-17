@@ -17,6 +17,7 @@ htmlcov/
 postgres/
 static_dist/
 static_root/
+static/builds-dev/
 
 # Docker Volumes
 docker/.volumes

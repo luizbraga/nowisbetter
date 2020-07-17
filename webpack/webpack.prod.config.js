@@ -9,6 +9,9 @@ config.entry = {
   ]
 };
 
+config.mode = 'production';
+
+
 config.output = {
   path: path.join(__dirname, '../static/builds/'),
   filename: '[name]-[hash].min.js',

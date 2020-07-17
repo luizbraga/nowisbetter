@@ -6,17 +6,18 @@ ENV PYTHONUNBUFFERED 1
 # Setup Debian linux
 RUN export DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get -y install build-essential curl
-RUN curl -sL https://deb.nodesource.com/setup_5.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_lts.x | bash -
 RUN apt-get install -y nodejs
 RUN nodejs -v && npm -v
 
-COPY ./requirements /requirements
-COPY ./package.json /app/
-
 WORKDIR /app
-COPY . /app
+COPY package.json .
+COPY ./requirements /requirements
 
-RUN pip install -r /requirements/local.txt && npm install && npm run build-development
+RUN pip install -r /requirements/local.txt
+RUN npm install
+
+COPY . .
 
 COPY ./docker/compose/django/dev/entrypoint.sh /entrypoint.sh
 RUN sed -i 's/\r//' /entrypoint.sh

@@ -11,7 +11,9 @@ config.entry = {
   ]
 };
 
-config.devtool = 'inline-sourcemap';
+config.mode = 'development';
+
+config.devtool = 'cheap-module-eval-source-map';
 config.output = {
   path: path.join(__dirname, '../static/builds-dev/'),
   filename: '[name]-[hash].js',
