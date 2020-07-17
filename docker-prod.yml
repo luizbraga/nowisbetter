@@ -1,0 +1,79 @@
+version: '2'
+
+volumes:
+  webserver_staticfiles: {}
+  webserver_media: {}
+
+services:
+  webserver:
+    container_name: webserver
+    image: nowisbetter-prod
+    build:
+      context: .
+      dockerfile: ./docker/compose/django/prod/Dockerfile
+    user: django
+    entrypoint: /gunicorn.sh
+    env_file:
+      - ./docker/environ/prod
+
+  nginx:
+    container_name: nginx_server
+    build: ./docker/compose/nginx
+    depends_on:
+      - webserver
+    ports:
+      - "0.0.0.0:80:80"
+
+  rabbitmq:
+      extends:
+        file: ./common.yml
+        service: rabbitmq
+      container_name: rabbitmq
+      env_file:
+          - ./docker/environ/prod
+      volumes:
+          - ./docker/.volumes/rabbitmq:/var/lib/rabbitmq
+
+  flower:
+      extends:
+        file: ./common.yml
+        service: flower
+      container_name: celery_flower
+      image: nowisbetter-prod
+      env_file:
+          - ./docker/environ/prod
+      links:
+          - rabbitmq
+
+  celery_beat:
+      extends:
+        file: ./common.yml
+        service: celery_beat
+      image: nowisbetter-prod
+      container_name: celery_beat
+      user: django
+      volumes:
+          - webserver_staticfiles:/app/staticfiles
+          - webserver_media:/app/media
+      env_file:
+          - ./docker/environ/prod
+      links:
+          - rabbitmq
+      depends_on:
+          - webserver
+
+  worker:
+      restart: on-failure
+      image: nowisbetter-prod
+      depends_on:
+          - webserver
+      container_name: celery_worker
+      user: django
+      links:
+          - rabbitmq
+      volumes:
+          - webserver_staticfiles:/app/staticfiles
+          - webserver_media:/app/media
+      env_file:
+          - ./docker/environ/prod
+      command: celery -A nowisbetter worker -n worker -l info -c 10 -Q default

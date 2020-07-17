@@ -1,0 +1,50 @@
+version: '2'
+
+services:
+
+    nginx:
+      restart: always
+      image: nginx
+
+    database:
+      restart: always
+      image: postgres:9.5
+      expose:
+        - 5432
+      volumes:
+        - ./postgres/data:/var/lib/postgresql
+
+    backend:
+      restart: always
+      image: nowisbetter
+      container_name: backend
+
+    frontend:
+      restart: always
+      container_name: frontend
+
+    rabbitmq:
+        image: rabbitmq:3.6-management
+        restart: on-failure
+        expose:
+            - 5672
+            - 15672
+
+    flower:
+        restart: always
+        image: nowisbetter
+        environment:
+            DOCKER_TLS_VERIFY: 'false'
+        command: celery flower --port=5757 --basic_auth=admin:admin@flower
+        expose:
+            - "5757"
+        ports:
+            - "5757:5757"
+
+    celery_beat:
+        restart: on-failure
+        image: nowisbetter
+        volumes:
+            - webserver_staticfiles:/app/staticfiles
+            - webserver_media:/app/media
+        command: celery -A nowisbetter beat -l info --pidfile= --scheduler django_celery_beat.schedulers:DatabaseScheduler

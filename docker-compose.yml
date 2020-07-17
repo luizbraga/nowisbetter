@@ -1,0 +1,115 @@
+version: '2'
+
+volumes:
+    webserver_staticfiles: {}
+    webserver_media: {}
+
+
+services:
+    database:
+        extends:
+          file: ./common.yml
+          service: database
+        env_file:
+          - ./docker/environ/local
+        ports:
+          - 5432:5432
+
+    pgadmin:
+        image: thajeztah/pgadmin4
+        container_name: pgadmin
+        links:
+          - database
+        ports:
+          - 5050:5050
+
+    backend:
+        extends:
+          file: ./common.yml
+          service: backend
+        build:
+          context: .
+          dockerfile: ./docker/compose/django/dev/Dockerfile
+        image: nowisbetter-dev
+        entrypoint:
+          - /entrypoint.sh
+        volumes:
+          - .:/app
+        links:
+          - database
+        env_file:
+          - ./docker/environ/local
+        ports:
+          - 8000:8000
+
+    frontend:
+        extends:
+          file: ./common.yml
+          service: frontend
+        build:
+          context: .
+          dockerfile: ./docker/compose/web/dev/Dockerfile
+        command: /start.sh
+        links:
+          - backend
+        volumes:
+          - .:/app
+        ports:
+          - 3000:3000
+
+    rabbitmq:
+        extends:
+          file: ./common.yml
+          service: rabbitmq
+        container_name: rabbitmq
+        env_file:
+            - ./docker/environ/local
+        volumes:
+            - ./docker/.volumes/rabbitmq:/var/lib/rabbitmq
+
+    flower:
+        extends:
+          file: ./common.yml
+          service: flower
+        container_name: celery_flower
+        image: nowisbetter-dev
+        volumes:
+            - .:/app
+        env_file:
+            - ./docker/environ/local
+        links:
+            - rabbitmq
+
+    celery_beat:
+        extends:
+          file: ./common.yml
+          service: celery_beat
+        image: nowisbetter-dev
+        container_name: celery_beat
+        volumes:
+            - webserver_staticfiles:/app/staticfiles
+            - webserver_media:/app/media
+            - .:/app
+        env_file:
+            - ./docker/environ/local
+        links:
+            - rabbitmq
+        depends_on:
+            - backend
+        command: celery -A nowisbetter beat -l debug --pidfile= --scheduler django_celery_beat.schedulers:DatabaseScheduler
+
+    worker:
+        restart: on-failure
+        image: nowisbetter-dev
+        depends_on:
+            - backend
+        container_name: celery_worker
+        links:
+            - rabbitmq
+        volumes:
+            - webserver_staticfiles:/app/staticfiles
+            - webserver_media:/app/media
+            - .:/app
+        env_file:
+            - ./docker/environ/local
+        command: celery -A nowisbetter worker -n worker -l info -c 10 -Q default

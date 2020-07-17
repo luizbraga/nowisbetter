@@ -1,0 +1,27 @@
+# Database settings
+POSTGRES_USER=nowisbetter
+POSTGRES_PASSWORD=nowisbetter
+POSTGRES_DB=nowisbetter
+POSTGRES_HOST=database
+DATABASE_URL=postgres://nowisbetter:nowisbetter@database:5432/nowisbetter
+
+# General settings
+DJANGO_DEBUG=True
+DJANGO_ADMIN_URL=admin/
+DJANGO_SETTINGS_MODULE=nowisbetter.settings.local
+DJANGO_SECRET_KEY=CHANGEME
+DJANGO_ALLOWED_HOSTS=*
+
+# Celery settings
+CELERY_BROKER_URL=amqp://admin_user:admin_pass@rabbitmq:5672/nowisbetter_host
+RABBITMQ_DEFAULT_USER=admin_user
+RABBITMQ_DEFAULT_PASS=admin_pass
+RABBITMQ_DEFAULT_VHOST=nowisbetter_host
+
+# Email
+EMAIL_HOST=localhost
+EMAIL_HOST_PASSWORD=
+EMAIL_PORT=25
+EMAIL_HOST_USER=nowisbetter@exameple.com
+DEFAULT_FROM_EMAIL=nowisbetter@example.com
+EMAIL_BACKEND=django.core.mail.backends.locmem.EmailBackend

@@ -1,0 +1,104 @@
+{% extends 'site/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% load i18n %}
+{% load account socialaccount %}
+
+{% block head_title %}{% trans "Sign In - NowisBetter" %}{% endblock %}
+
+{% block extra_styles %}
+<link rel="stylesheet" href="{% static 'css/add-margin-container.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static 'css/bootstrap-social.css' %}" type="text/css">
+{% endblock %}
+
+{% block body %}
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-6 col-xs-offset-3">
+        {% if form.errors %}
+          {% for field in form %}
+            {% for error in field.errors %}
+              <div class="login-alert alert alert-danger alert-dismissible fade in" role="alert">
+                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <strong>{{ field.label }}:</strong> {{ error|escape }}
+              </div>
+            {% endfor %}
+          {% endfor %}
+          {% for error in form.non_field_errors %}
+              <div class="alert alert-danger alert-dismissible fade in" role="alert">
+                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                {{ error|escape }}
+              </div>
+          {% endfor %}
+        {% endif %}
+        <div class="login-form center-block">
+        {% block form_content %}
+          <form method="post" action="{% url 'account_login' %}" role="form" class="jumbotron">
+            <p>{% blocktrans with site.name as site_name %}Sign In or <a href="{{ signup_url }}">Sign up</a>
+            for a {{ site_name }} account{% endblocktrans %}</p>
+            {% csrf_token %}
+            <div class="form-group has-feedback">
+              {% render_field form.login class="form-control" placeholder="Username" %}
+              <span class="glyphicon glyphicon-user form-control-feedback"></span>
+              <span><font color="red"></font></span>
+            </div>
+            <div class="form-group has-feedback">
+                {% render_field form.password class="form-control" placeholder="Password" %}
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                <span><font color="red"></font></span>
+            </div>
+            <div class="row">
+              <div class="col-xs-4">
+                <input type="submit" value="Login" class="btn btn-primary btn-block btn-flat">
+                <input type="hidden" name="next" value="{{ next }}" />
+              </div>
+            </div>
+            <br>
+            <div class="row">
+                {% get_providers as socialaccount_providers %}
+
+                {% if socialaccount_providers %}
+
+                <div class="socialaccount_ballot">
+                  <ul class="list-unstyled socialaccount_providers">
+                    {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+                  </ul>
+                </div>
+
+                {% include "socialaccount/snippets/login_extra.html" %}
+                {% endif %}
+            </div>
+            <br>
+            <div class="row">
+              {% if redirect_field_value %}
+                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+              {% endif %}
+              <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+            </div>
+          </form>
+
+        {% endblock %}
+        </div>
+      </div>
+    </div>
+    </div>
+
+    {% endblock %}
+
+    {% block extra_scripts %}
+    {{ block.super }}
+    <script>
+      $(document).ready(function() {
+      $('[rel=popover]').popover();
+    });
+      //to dismiss a popover by clicking outside it
+      $('body').on('click', function (e) {
+      $('[data-toggle="popover"]').each(function () {
+          if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+              $(this).popover('hide');
+          }
+      });
+    });
+    </script>
+    {% endblock extra_scripts %}

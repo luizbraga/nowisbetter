@@ -1,0 +1,11 @@
+{% extends 'site/base.html' %}
+{% load staticfiles %}
+{% load render_bundle from webpack_loader %}
+
+{% block body %}
+<div id="content"></div>
+{% endblock body %}
+
+{% block javascript %}
+{% render_bundle 'main' %}
+{% endblock javascript %}

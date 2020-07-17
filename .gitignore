@@ -1,0 +1,69 @@
+# IDEs
+.project
+.pydevproject
+.idea
+.vscode
+.settings
+
+# Random files
+*~
+\#*
+
+# Webpack files
+webpack/webpack-stats.dev.json
+
+virtualenv/
+htmlcov/
+postgres/
+static_dist/
+static_root/
+
+# Docker Volumes
+docker/.volumes
+docker/environ/prod
+staticfiles
+media
+
+# Celery Beat
+celerybeat.pid
+
+# Python compiled byte code
+*.py[cod]
+__pycache__
+
+
+# virtual environments
+.env
+
+# User-uploaded media
+venv/
+staticfiles
+venv
+
+# SQLite3 database
+*.sqlite
+
+# Node modules
+node_modules/
+yarn.lock
+npm-debug.log
+
+# Pytest
+.pytest_cache
+
+# Coverage
+coverage/
+.coverage
+.cache
+
+# static validation files
+.eslintrc
+.sass-lint.yml
+.prospector.yml
+.coveragerc
+
+# in case we run shippable tests don't include it
+shippable/
+
+# not include scripts because they come from external module
+scripts/
