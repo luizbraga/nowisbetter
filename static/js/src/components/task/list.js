@@ -1,30 +1,30 @@
 import _ from 'lodash';
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
+
 import Task from './task';
 import { patchTask } from '../../actions';
 
 
 class ListTask extends Component {
     state = {
-        taskList: [],
         uncompletedList: [],
         doneList: []
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
-        return nextProps.taskList === prevState.taskList
+        const { taskList } = nextProps
+        const uncompletedList = _.filter(taskList, (o) => {return !o.is_done})
+        const doneList = _.filter(taskList, 'is_done')
+        return uncompletedList === prevState.uncompletedList && doneList == prevState.doneList
             ? {}
-            : {
-                taskList: nextProps.taskList,
-                uncompletedList: _.filter(nextProps.taskList, (o) => {return !o.is_done}),
-                doneList: _.filter(nextProps.taskList, 'is_done')
-            }
+            : { uncompletedList, doneList }
     }
 
     handleCheck = (event) => {
         const { checked } = event.target
         const { id } = event.target
-        patchTask(id, {'is_done': checked})
+        this.props.patchTask(id, {'is_done': checked})
     }
 
     render() {
@@ -56,4 +56,7 @@ class ListTask extends Component {
     }
 }
 
-export default ListTask;
+export default connect(
+    null,
+    { patchTask }
+  )(ListTask);

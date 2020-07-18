@@ -52,7 +52,7 @@ class TaskListIndex extends Component {
     })
   }
 
-  onCreateClick () {
+  onCreateClick = () => {
     this.props.createEmptyTaskList();
   }
 
@@ -66,7 +66,7 @@ class TaskListIndex extends Component {
           <div className="col-lg-9">
             <button
               className="btn btn-default pull-right"
-              onClick={this.onCreateClick.bind(this)}>
+              onClick={this.onCreateClick}>
               Add a List
             </button>
           </div>
@@ -82,13 +82,13 @@ class TaskListIndex extends Component {
 }
 
 // Consuming from state
-function maptStateToProps(state) {
+function mapStateToProps(state) {
   return {task_lists: state.task_lists}
 }
 
 // Identical to mapFetchPostoToProps
 // If u want to do some computation, create the function
 export default connect(
-    maptStateToProps,
+    mapStateToProps,
     { fetchLists, fetchUsers, createEmptyTaskList, createTaskList, updateTaskList }
   )(TaskListIndex);
