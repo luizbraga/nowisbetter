@@ -1,65 +1,59 @@
+import _ from 'lodash';
 import React, {Component} from 'react';
-import {Modal} from 'react-bootstrap';
-import TaskCreateEditForm from '../form/task_form';
-import {editTask} from '../../actions';
+import Task from './task';
+import { patchTask } from '../../actions';
 
 
+class ListTask extends Component {
+    state = {
+        taskList: [],
+        uncompletedList: [],
+        doneList: []
+    }
 
-export default class ListTask extends Component {
-  constructor(props, context) {
-    super(props, context);
+    static getDerivedStateFromProps(nextProps, prevState) {
+        return nextProps.taskList === prevState.taskList
+            ? {}
+            : {
+                taskList: nextProps.taskList,
+                uncompletedList: _.filter(nextProps.taskList, (o) => {return !o.is_done}),
+                doneList: _.filter(nextProps.taskList, 'is_done')
+            }
+    }
 
-    this.handleShow = this.handleShow.bind(this);
-    this.handleClose = this.handleClose.bind(this);
-    this.handleCheck = this.handleCheck.bind(this);
+    handleCheck = (event) => {
+        const { checked } = event.target
+        const { id } = event.target
+        patchTask(id, {'is_done': checked})
+    }
 
-    this.state = {
-      show: false
-    };
-  }
-
-  handleClose() {
-    this.setState({ show: false });
-  }
-
-  handleShow() {
-    this.setState({ show: true });
-  }
-
-  handleCheck(event) {
-    const { taskData } = this.props
-    const {checked} = event.target
-    taskData.is_done = checked
-    taskData.list_id = this.props.list_id
-    editTask(taskData.id, taskData)
-  }
-
-  render() {
-    const { taskData } = this.props;
-    const { list_id } = this.props;
-
-
-    return (
-      <li className="list-group-item">
-        <div className="checkbox-inline">
-          <input type="checkbox" defaultChecked={taskData.is_done} onChange={this.handleCheck} />
-          <div onClick={this.handleShow}> {taskData.title}</div>
-        </div>
-        <Modal show={this.state.show} onHide={this.handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Edit Task</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
+    render() {
+        const { taskListId } = this.props;
+        const { uncompletedList } = this.state;
+        const { doneList } = this.state;
+        return (
             <div>
-              <TaskCreateEditForm
-                initialValues={taskData}
-                list_id={list_id}
-                handleClose={this.handleClose}
-              />
+                <ul className="list-group">
+                {
+                    _.map(uncompletedList, task => {
+                        return (
+                            <Task key={task.id} taskData={task} list_id={taskListId} onChange={this.handleCheck}/>
+                        );
+                    })
+                }
+                </ul>
+                <ul className="list-group done">
+                {
+                    _.map(doneList, task => {
+                        return (
+                            <Task key={task.id} taskData={task} list_id={taskListId} onChange={this.handleCheck}/>
+                        );
+                    })
+                }
+                </ul>
             </div>
-          </Modal.Body>
-        </Modal>
-      </li>
-    )
-  }
+        )
+    }
 }
+
+export default ListTask;

@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
 import {fetchLists} from '../actions';
 import {fetchUsers} from '../actions';
 import {createEmptyTaskList} from '../actions';
@@ -11,7 +10,6 @@ import InlineInput from './inline_edit';
 
 import CreateTask from './task/add';
 import ListTask from './task/list';
-
 
 
 class TaskListIndex extends Component {
@@ -43,18 +41,11 @@ class TaskListIndex extends Component {
 
   renderTaskList() {
     return _.map(this.props.task_lists, task_list => {
+      const { tasks } = task_list
       return (
         <li className="list-group-item col-lg-3" key={task_list.id}>
           {this.renderTitle(task_list)}
-          <ul className="list-group">
-          {
-            _.map(task_list.tasks, task => {
-              return(
-                  <ListTask key={task.id} taskData={task} list_id={task_list.id}/>
-                );
-            })
-          }
-          </ul>
+          <ListTask taskListId={task_list.id} taskList={tasks} />
           <CreateTask list_id={task_list.id} />
         </li>
       );

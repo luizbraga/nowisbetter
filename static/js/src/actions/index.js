@@ -86,3 +86,17 @@ export function editTask(id, values, callback) {
     payload: request
   }
 }
+
+export function patchTask(id, values, callback) {
+  const request = axios.patch(
+      `/api/tasks/update/${id}`, values).catch(error => {
+      return {
+        payload: error.response.data
+      }
+  });
+
+  return {
+    type: CREATE_EDIT_TASK,
+    payload: request
+  }
+}

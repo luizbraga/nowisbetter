@@ -7,7 +7,6 @@ import 'react-datetime/css/react-datetime.css';
 
 const DatePickerComponent = ({input, label, placeholder, meta: {touched, error} }) => {
   const class_name = `form-group ${touched && error ? 'has-danger':''}`
-  console.log(input)
   return(
     <div>
         <label>{label}</label>
