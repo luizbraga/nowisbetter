@@ -25,7 +25,7 @@ class TaskSerializer(serializers.ModelSerializer):
 class TaskFormSerializer(serializers.ModelSerializer):
     description = serializers.CharField(required=False, allow_blank=True)
     deadline = serializers.DateTimeField(
-        allow_null=True, required=False, format='%d-%m-%Y')
+        allow_null=True, required=False, format='%m/%d/%Y', input_formats=['%m/%d/%Y'])
 
     list_id = serializers.PrimaryKeyRelatedField(
         many=False, read_only=False,

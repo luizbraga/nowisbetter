@@ -7,13 +7,14 @@ import 'react-datetime/css/react-datetime.css';
 
 const DatePickerComponent = ({input, label, placeholder, meta: {touched, error} }) => {
   const class_name = `form-group ${touched && error ? 'has-danger':''}`
+  console.log(input)
   return(
     <div>
         <label>{label}</label>
         <Datetime
           className={class_name}
           {...input}
-          dateFormat={'MM-DD-YYYY'}
+          dateFormat={'MM/DD/YYYY'}
           timeFormat={false}
         />
         <div className="text-help">
