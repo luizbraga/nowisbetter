@@ -43,9 +43,9 @@ class TaskListIndex extends Component {
     return _.map(this.props.task_lists, task_list => {
       const { tasks } = task_list
       return (
-        <li className="list-group-item col-lg-3" key={task_list.id}>
+        <li className="listing list-group-item col-sm-3" key={task_list.id}>
           <div className="task-list">
-            {this.renderTitle(task_list)}
+            {this.renderTitle( task_list)}
             <CreateTask taskListId={task_list.id} />
           </div>
           <ListTask taskListId={task_list.id} taskList={tasks} />

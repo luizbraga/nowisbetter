@@ -33,6 +33,10 @@ class QuickNewTask extends Component {
     }
 
     render () {
+        const { taskListId } = this.props
+        if (taskListId === 'temp') {
+            return <div></div>
+        }
         return (
             <li className="list-group-item">
                 <div className="checkbox-inline">
@@ -41,7 +45,7 @@ class QuickNewTask extends Component {
                         className="quick-new-task"
                         type="text"
                         name='name'
-                        placeholder='Add new task'
+                        placeholder='List item'
                         value={this.state.taskTitle}
                         onBlur={this.dispatchNewTask}
                         onChange={this.handleOnChange}

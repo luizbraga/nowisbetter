@@ -31,11 +31,12 @@ class ListTask extends Component {
 
     renderTaskLists(taskList, isDone) {
         const { taskListId } = this.props;
-        return taskList.length === 0
-            ? <div></div>
-            : <ul className={`list-group${isDone == true ? ' completed' : ''}`}>
+        return (
+            <ul className={`list-group${isDone == true ? ' completed' : ''}`}>
                 {
-                    _.map(taskList, task => {
+                    taskList.length === 0
+                    ? <div></div>
+                    : _.map(taskList, task => {
                         return (
                             <Task key={task.id}
                                   taskData={task}
@@ -46,6 +47,7 @@ class ListTask extends Component {
                 }
                 {isDone == true ? <div></div> : <QuickNewTask taskListId={taskListId} />}
             </ul>
+        )
     }
 
     render() {
@@ -54,7 +56,7 @@ class ListTask extends Component {
         return (
             <div>
                 { this.renderTaskLists(uncompletedList) }
-                { uncompletedList.length === 0 || doneList.length === 0 ? <div></div> : <hr></hr> }
+                { doneList.length === 0 ? <div></div> : <hr></hr> }
                 {this.renderTaskLists(doneList, true)}
             </div>
         )
