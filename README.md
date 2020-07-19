@@ -1,11 +1,23 @@
-# :construction: Under Construction :construction:
 ## Now is Better
 
-Aplicação de lista de atividaddes que utiliza Django e React.
+Application responsible to list groups of lists of tasks. It works similar to Google Keep.
 
-Consiste em criar listas de tarefas e atribuir à outros usuários. Além disso, irá enviar um relatório diário por e-mail das atividades concluídas no dia e as próximas prioridades.
+### Initial Setup
+* Python 3.6.x
+* Node version 12.x
+* Postgres as database
+* Create an `.env` file with the same variables as in `docker/environ/local`
 
-### Utilizando DOCKER
+#### Running
+
+* Run `npm install` and `pip install -r requirements/local.txt` to install dependencies
+* Run `npm run watch` to activate hot updates from JS and CSS files
+* Run the migrations with `python manage.py migrate`
+* Run `python manage.py runserver` to start the backend
+* Create a superuser with `python manage.py createsuperuser`
+* Access `localhost:8000` and login with the user you just created
+
+##### Using Docker
 * Install [Docker](https://www.docker.com/products/overview) and [Docker Compose](https://docs.docker.com/compose/install/).
 * `$ docker-compose build`
 * `$ docker-compose up`

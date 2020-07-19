@@ -1,0 +1,7 @@
+.task-group {
+    max-width: 20%;
+}
+
+.completed {
+    color: gray;
+}

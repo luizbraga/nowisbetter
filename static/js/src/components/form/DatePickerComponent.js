@@ -13,7 +13,7 @@ const DatePickerComponent = ({input, label, placeholder, meta: {touched, error} 
         <Datetime
           className={class_name}
           {...input}
-          dateFormat={'MM-DD-YYYY'}
+          dateFormat={'MM/DD/YYYY'}
           timeFormat={false}
         />
         <div className="text-help">

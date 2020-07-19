@@ -14,11 +14,14 @@ export default function(state = {}, action) {
 
     case CREATE_EMPTY_LIST:
       return { ...state, ['temp']: {'id': 'temp', 'title': ''} }
+    
     case CREATE_TASK_LIST:
       const newState = _.omit(state, ['temp'])
       return { ...newState, [action.payload.data.id]: action.payload.data }
+    
     case UPDATE_TASK_LIST:
       return { ...state, [action.payload.data.id]: action.payload.data }
+    
     case FETCH_LIST:
       // create a list of objects based on a key
       const data = _.mapKeys(action.payload.data, 'id')

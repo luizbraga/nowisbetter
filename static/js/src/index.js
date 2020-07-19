@@ -6,8 +6,8 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import promise from 'redux-promise'
 
 import reducers from './reducers';
-import Header from './components/header'
-import TaskListIndex from './components/task_list'
+import Header from './components/Header'
+import TaskListIndex from './components/TaskListIndex'
 
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 

@@ -18,10 +18,24 @@ class TaskCreateView(generics.CreateAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskFormSerializer
 
+    def create(self, request):
+        if 'user_ids' not in request.data:
+            request.data.update({'user_ids': [request.user.id]})
+        return super(TaskCreateView, self).create(request)        
+
 
 class TaskUpdateView(generics.UpdateAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskFormSerializer
+
+    def patch(self, request, pk):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class TaskListView(viewsets.ModelViewSet):

@@ -1,18 +1,16 @@
 import _ from 'lodash';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
 import {fetchLists} from '../actions';
 import {fetchUsers} from '../actions';
 import {createEmptyTaskList} from '../actions';
 import {createTaskList} from '../actions';
 import {updateTaskList} from '../actions';
-import InlineInput from './inline_edit';
+import InlineInput from './InlineInput';
 
-import CreateTask from './task/add';
-import ListTask from './task/list';
-
-
+import CreateTask from './task/CreateTask';
+import ListTask from './task/ListTask';
+import './TaskListIndex.css'
 
 class TaskListIndex extends Component {
   componentDidMount() {
@@ -43,25 +41,20 @@ class TaskListIndex extends Component {
 
   renderTaskList() {
     return _.map(this.props.task_lists, task_list => {
+      const { tasks } = task_list
       return (
-        <li className="list-group-item col-lg-3" key={task_list.id}>
-          {this.renderTitle(task_list)}
-          <ul className="list-group">
-          {
-            _.map(task_list.tasks, task => {
-              return(
-                  <ListTask key={task.id} taskData={task} list_id={task_list.id}/>
-                );
-            })
-          }
-          </ul>
-          <CreateTask list_id={task_list.id} />
+        <li className="listing list-group-item col-sm-3" key={task_list.id}>
+          <div className="task-list">
+            {this.renderTitle( task_list)}
+            <CreateTask taskListId={task_list.id} />
+          </div>
+          <ListTask taskListId={task_list.id} taskList={tasks} />
         </li>
       );
     })
   }
 
-  onCreateClick () {
+  onCreateClick = () => {
     this.props.createEmptyTaskList();
   }
 
@@ -75,7 +68,7 @@ class TaskListIndex extends Component {
           <div className="col-lg-9">
             <button
               className="btn btn-default pull-right"
-              onClick={this.onCreateClick.bind(this)}>
+              onClick={this.onCreateClick}>
               Add a List
             </button>
           </div>
@@ -91,13 +84,13 @@ class TaskListIndex extends Component {
 }
 
 // Consuming from state
-function maptStateToProps(state) {
+function mapStateToProps(state) {
   return {task_lists: state.task_lists}
 }
 
 // Identical to mapFetchPostoToProps
 // If u want to do some computation, create the function
 export default connect(
-    maptStateToProps,
+    mapStateToProps,
     { fetchLists, fetchUsers, createEmptyTaskList, createTaskList, updateTaskList }
   )(TaskListIndex);
