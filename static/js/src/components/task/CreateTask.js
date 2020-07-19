@@ -23,7 +23,7 @@ export default class CreateTask extends Component {
     const {taskListId} = this.props
     return (
       <div className="center-icon">
-        <i class="fa fa-plus" aria-hidden="true" onClick={this.handleShow}></i>
+        <i className="fa fa-plus" aria-hidden="true" onClick={this.handleShow}></i>
         <Modal show={this.state.show} onHide={this.handleClose}>
           <Modal.Header closeButton>
             <Modal.Title>New Task</Modal.Title>

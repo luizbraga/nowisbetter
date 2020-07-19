@@ -1,3 +1,6 @@
 .center-icon {
     margin: 5 0 5 0;
 }
+.center-icon:hover {
+    cursor: pointer;
+}

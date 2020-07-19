@@ -27,36 +27,31 @@ class ListTask extends Component {
         this.props.patchTask(id, {'is_done': checked})
     }
 
-    render() {
+    renderTaskLists(taskList, isDone) {
         const { taskListId } = this.props;
+        return taskList.length === 0
+            ? <div></div>
+            : <ul className={`list-group${isDone == true ? ' completed' : ''}`}>
+                {
+                    _.map(taskList, task => {
+                        return (
+                            <Task key={task.id}
+                                    taskData={task}
+                                    list_id={taskListId}
+                                    onChange={this.handleCheck}/>
+                        )
+                    })
+                }
+            </ul>
+    }
+
+    render() {
         const { uncompletedList } = this.state;
         const { doneList } = this.state;
         return (
             <div>
-                <ul className="list-group">
-                {
-                    _.map(uncompletedList, task => {
-                        return (
-                            <Task key={task.id}
-                                  taskData={task}
-                                  list_id={taskListId}
-                                  onChange={this.handleCheck}/>
-                        );
-                    })
-                }
-                </ul>
-                <ul className="list-group done">
-                {
-                    _.map(doneList, task => {
-                        return (
-                            <Task key={task.id}
-                                  taskData={task}
-                                  list_id={taskListId}
-                                  onChange={this.handleCheck}/>
-                        );
-                    })
-                }
-                </ul>
+                { this.renderTaskLists(uncompletedList) }
+                { this.renderTaskLists(doneList, true) }
             </div>
         )
     }
