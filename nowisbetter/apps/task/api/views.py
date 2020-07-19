@@ -18,6 +18,11 @@ class TaskCreateView(generics.CreateAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskFormSerializer
 
+    def create(self, request):
+        if 'user_ids' not in request.data:
+            request.data.update({'user_ids': [request.user.id]})
+        return super(TaskCreateView, self).create(request)        
+
 
 class TaskUpdateView(generics.UpdateAPIView):
     queryset = Task.objects.all()

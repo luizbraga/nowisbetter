@@ -4,6 +4,8 @@ import {connect} from 'react-redux';
 
 import Task from './Task';
 import { patchTask } from '../../actions';
+import QuickNewTask from './QuickNewTask';
+import './ListTask.css'
 
 
 class ListTask extends Component {
@@ -36,12 +38,13 @@ class ListTask extends Component {
                     _.map(taskList, task => {
                         return (
                             <Task key={task.id}
-                                    taskData={task}
-                                    list_id={taskListId}
-                                    onChange={this.handleCheck}/>
+                                  taskData={task}
+                                  list_id={taskListId}
+                                  onChange={this.handleCheck}/>
                         )
                     })
                 }
+                {isDone == true ? <div></div> : <QuickNewTask taskListId={taskListId} />}
             </ul>
     }
 
@@ -51,7 +54,8 @@ class ListTask extends Component {
         return (
             <div>
                 { this.renderTaskLists(uncompletedList) }
-                { this.renderTaskLists(doneList, true) }
+                { uncompletedList.length === 0 || doneList.length === 0 ? <div></div> : <hr></hr> }
+                {this.renderTaskLists(doneList, true)}
             </div>
         )
     }
