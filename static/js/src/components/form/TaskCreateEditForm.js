@@ -3,9 +3,8 @@ import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
 
 import {editTask, createTask} from '../../actions';
-import DatePickerComponent from './datepicker';
-import MultiselectComponent from './multiselect';
-import { push } from 'react-router-redux';
+import DatePickerComponent from './DatePickerComponent';
+import MultiselectComponent from './MultiselectComponent';
 
 
 class TaskCreateEditForm extends Component {
@@ -45,7 +44,7 @@ class TaskCreateEditForm extends Component {
 
   onSubmit(values) {
     const {initialValues} = this.props
-    values['list_id'] = this.props.list_id
+    values['list_id'] = this.props.taskListId
 
     if (!initialValues) {
       this.props.createTask(values)

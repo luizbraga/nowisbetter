@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Modal} from 'react-bootstrap';
-import TaskCreateEditForm from '../form/task_form';
+import TaskCreateEditForm from '../form/TaskCreateEditForm';
 
 
 export default class Task extends Component {

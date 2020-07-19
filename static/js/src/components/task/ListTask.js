@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-import Task from './task';
+import Task from './Task';
 import { patchTask } from '../../actions';
 
 
@@ -37,7 +37,10 @@ class ListTask extends Component {
                 {
                     _.map(uncompletedList, task => {
                         return (
-                            <Task key={task.id} taskData={task} list_id={taskListId} onChange={this.handleCheck}/>
+                            <Task key={task.id}
+                                  taskData={task}
+                                  list_id={taskListId}
+                                  onChange={this.handleCheck}/>
                         );
                     })
                 }
@@ -46,7 +49,10 @@ class ListTask extends Component {
                 {
                     _.map(doneList, task => {
                         return (
-                            <Task key={task.id} taskData={task} list_id={taskListId} onChange={this.handleCheck}/>
+                            <Task key={task.id}
+                                  taskData={task}
+                                  list_id={taskListId}
+                                  onChange={this.handleCheck}/>
                         );
                     })
                 }

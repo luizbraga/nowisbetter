@@ -6,11 +6,11 @@ import {fetchUsers} from '../actions';
 import {createEmptyTaskList} from '../actions';
 import {createTaskList} from '../actions';
 import {updateTaskList} from '../actions';
-import InlineInput from './inline_edit';
+import InlineInput from './InlineInput';
 
-import CreateTask from './task/add';
-import ListTask from './task/list';
-
+import CreateTask from './task/CreateTask';
+import ListTask from './task/ListTask';
+import './TaskListIndex.css'
 
 class TaskListIndex extends Component {
   componentDidMount() {
@@ -44,9 +44,11 @@ class TaskListIndex extends Component {
       const { tasks } = task_list
       return (
         <li className="list-group-item col-lg-3" key={task_list.id}>
-          {this.renderTitle(task_list)}
+          <div className="task-list">
+            {this.renderTitle(task_list)}
+            <CreateTask taskListId={task_list.id} />
+          </div>
           <ListTask taskListId={task_list.id} taskList={tasks} />
-          <CreateTask list_id={task_list.id} />
         </li>
       );
     })
