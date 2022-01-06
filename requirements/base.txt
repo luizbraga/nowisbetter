@@ -21,7 +21,7 @@ requests==2.20.0
 django-widget-tweaks==1.4.2
 
 # Celery
-celery==4.4.6
+celery==5.2.2
 django-celery-beat==2.0.0
 django-celery-results==1.0.4
 flower==0.9.5
