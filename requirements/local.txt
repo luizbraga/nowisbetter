@@ -11,6 +11,6 @@ pytest-xdist==1.22.2
 
 # Debugging
 ipdb==0.10.1
-ipython==5.0.0
+ipython==7.16.3
 
 ptpython==0.41
