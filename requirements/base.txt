@@ -23,7 +23,7 @@ django-widget-tweaks==1.4.2
 # Celery
 celery==4.4.6
 django-celery-beat==2.0.0
-django-celery-results==1.0.4
+django-celery-results==2.4.0
 flower==0.9.5
 
 # Django Webpack
